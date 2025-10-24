@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 {
+
+    public static int bulletCount = 0;
+
     float time = 0;
     public int reverse = 1;
     public GameObject circle = null;
@@ -32,8 +37,13 @@ public class Enemy : MonoBehaviour
         int bouncies;
         
     [SerializeField] float health, maxHealth = 3f;
- Color red = new Color (1, 0.5f, 0.5f, 1); 
- Color white = new Color (1, 1, 1, 1); 
+ Color red = new Color (1, 0.5f, 0.5f, 1);
+    Color white = new Color(1, 1, 1, 1);
+
+    private bool amIDead = false;
+
+
+    private Tween bounceAnimation;
     private void Start(){
         
         sprite = GetComponent<SpriteRenderer>();
@@ -58,6 +68,10 @@ public class Enemy : MonoBehaviour
         sprite.color =  white; 
     }
     public void TakeDamamge(float damageAmount, int bounces){
+        bounceAnimation.Kill();
+
+        bounceAnimation = transform.DOScale(1.5f, 0.1f).OnComplete(() => transform.DOScale(1f, 0.1f)).SetEase(Ease.InOutSine);
+
         bouncies = bounces;
           if(bouncies >1){
             bouncies--;
@@ -95,11 +109,12 @@ public class Enemy : MonoBehaviour
                          GameObject blood6 = Instantiate(f, transform.position, transform.rotation);
                     break;
                 }
-                
 
-            
-             GameObject xp = Instantiate(xporb, transform.position, transform.rotation);
-            Destroy(gameObject);
+
+            lettherebeenemies.instance.ReduceEnemyCounter();
+            GameObject xp = Instantiate(xporb, transform.position, transform.rotation);
+            bounceAnimation.Kill();
+            KillEnemy();
         }
     }
 
@@ -108,20 +123,24 @@ public class Enemy : MonoBehaviour
     }
 
      public void Update() {
+        if (amIDead)
+            return;
+
         if(ignited)
         time += Time.deltaTime;
         if(time> 0.5f)
-        doov();
+        KillEnemy();
        // FindClosestEnemy ();
 	
         distance = Vector2.Distance(transform.position,target.transform.position);
         Vector2 direction = target.transform.position - transform.position;
 
         if(direction.x > 1){
-            transform.localScale  = new Vector3(reverse*1,1,1);
+            GetComponent<SpriteRenderer>().flipX = false;
         }
          else
-          transform.localScale  = new Vector3(reverse*-1,1,1);
+            GetComponent<SpriteRenderer>().flipX = true;
+
        
          if(ranger){
 
@@ -158,9 +177,11 @@ public class Enemy : MonoBehaviour
   
 //  playa = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
-    public void doov(){
-
-                        Destroy(gameObject);
+    public void KillEnemy(){
+        amIDead = true;
+        GetComponent<Collider2D>().enabled = false;
+        transform.DOScale(2, 0.2f);
+        GetComponent<SpriteRenderer>().DOFade(0, 0.3f).OnComplete(() => Destroy(gameObject));
     }
 	public void hurtfriend(float z )
 	{

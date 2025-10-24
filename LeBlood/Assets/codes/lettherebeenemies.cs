@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class lettherebeenemies : MonoBehaviour
-{ 
+{
+
+  public static lettherebeenemies instance; 
 public bool OnButton =  true;
 public int range = 20;
 public int size;
@@ -11,17 +13,32 @@ public float spawntime ;
 public int spawnamount = 2;
 public int asa  = 1;
 private float timesincelastspawn;
-public GameObject[] c;
-public void speedup(){
-      spawnamount++;
+  public GameObject[] c;
 
-      if(spawnamount % 2 == 0)
-        asa = spawnamount/2;
+  public int enemyCounter = 0;
 
-     if(spawntime  > 0.2)
-    
-            spawntime = spawntime - 0.1f;   
-}
+    void Awake()
+    {
+    instance = this;
+    }
+
+  public void speedup()
+  {
+    spawnamount++;
+
+    if (spawnamount % 2 == 0)
+      asa = spawnamount / 2;
+
+    if (spawntime > 0.2)
+
+      spawntime = spawntime - 0.1f;
+  }
+  
+
+  public void ReduceEnemyCounter()
+    {
+    enemyCounter--;
+    }
     // Update is called once per frame
  void Update()
  {  
@@ -31,7 +48,13 @@ public void speedup(){
     { 
       timesincelastspawn = 0f;
        for(int i = 0 ; i < asa ; i++)
-      Instantiate(c[Random.Range(0,size)], new Vector2(Random.Range(-range,range),Random.Range(-range,range)), Quaternion.identity);
+        {
+        if(enemyCounter < 100)
+          {
+            Instantiate(c[Random.Range(0, size)], new Vector2(Random.Range(-range, range), Random.Range(-range, range)), Quaternion.identity);
+            enemyCounter++;
+          }
+      }
         
    }        
   }          

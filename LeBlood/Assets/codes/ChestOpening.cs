@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ChestOpening : MonoBehaviour
@@ -22,21 +23,7 @@ public class ChestOpening : MonoBehaviour
       //   animator.SetBool("bop", true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-   
-    public IEnumerator disappear(){
-        timmy =  Time.time;
-        while(Time.time-timmy < 5){
-               yield return new WaitForSeconds(0.1f);
-          white = white - minus;
-          sprite.color = white;
-        }
-        Destroy(gameObject);
-    }
+
     public void open(){
       if(it){
             staticinfo.spawning = true;
@@ -47,9 +34,10 @@ public class ChestOpening : MonoBehaviour
           gameObject.GetComponent<Collider2D>().enabled = false;
          gameObject.GetComponent<ParticleSystem>().Play(); 
          gameObject.GetComponent<AudioSource>().Play();
-         animator.SetBool("bop", true);
-         
-         StartCoroutine(disappear());
+          animator.SetBool("bop", true);
+         transform.DOScale(1.7f, 0.2f).OnComplete(() => transform.DOScale(1.2f, 0.1f)).SetEase(Ease.InOutSine);
+
+      GetComponent<SpriteRenderer>().DOFade(0, 0.7f).SetEase(Ease.InOutSine).OnComplete(() => Destroy(gameObject));
     }
 
    

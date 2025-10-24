@@ -28,6 +28,7 @@ public class EnemyBullet : MonoBehaviour
 
    void Destroy()
     {
+        Enemy.bulletCount--;
         Destroy(gameObject);
     }
 

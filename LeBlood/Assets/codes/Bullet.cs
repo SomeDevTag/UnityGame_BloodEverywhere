@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class Bullet : MonoBehaviour
 {
 
@@ -46,18 +46,22 @@ public class Bullet : MonoBehaviour
                 Vector3 difference = collision.transform.position - transform.position;
                 difference.Normalize();
                 collision.transform.position = collision.transform.position + difference/2;
-              
-                  if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemyComponent)){
-                      
-                      //  if(fanta){
-                       //     enemyComponent.hurtfriend(amountofdamage);
-                     //   }
-                         enemyComponent.TakeDamamge(amountofdamage , bouncers);
-                         enemyComponent.ouchie();
 
-                  }
-                  
-                Destroy();
+            if (collision.gameObject.TryGetComponent<Enemy>(out Enemy enemyComponent))
+            {
+
+                //  if(fanta){
+                //     enemyComponent.hurtfriend(amountofdamage);
+                //   }
+                enemyComponent.TakeDamamge(amountofdamage, bouncers);
+                enemyComponent.ouchie();
+
+            }
+            GetComponent<Collider2D>().enabled = false;
+            transform.DOScale(0.7f, 0.1f).SetEase(Ease.InOutBounce).OnComplete(() => {
+                Destroy(gameObject);
+            });
+              
          //  Destroy(gameObject);
      
 

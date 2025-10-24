@@ -32,6 +32,9 @@ public class RangedAttack : MonoBehaviour
     }
 
     void shoot(){
-        Instantiate(bullet,bulletPos.position,Quaternion.identity);
+        if (Enemy.bulletCount > 60)
+            return;
+        Instantiate(bullet, bulletPos.position, Quaternion.identity);
+        Enemy.bulletCount++;
     }
 }

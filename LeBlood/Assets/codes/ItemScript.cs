@@ -41,8 +41,7 @@ public class ItemScript : MonoBehaviour
                             else if (b.attacktime  > 0.2f){
                                  b.attacktime -= 0.2f;
                                  b.damage++;
-                            }
-                                   
+                            }                                   
                           }
                     break;
                       case 6:
@@ -57,7 +56,6 @@ public class ItemScript : MonoBehaviour
                     //machinegun
                      staticinfo.basedamage =   staticinfo.basedamage * 0.75f;
                     staticinfo.shootingrate = staticinfo.shootingrate / 2;
-
                     break;
                      case 9:
                     //crit
