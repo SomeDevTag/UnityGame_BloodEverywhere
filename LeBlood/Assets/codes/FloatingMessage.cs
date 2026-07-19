@@ -18,7 +18,7 @@ public class FloatingMessage : MonoBehaviour
     }
 
     private void Start(){
-        _rigidbody.velocity = new Vector2(Random.Range(-InitialXVelocityRange,InitialXVelocityRange),InitialYVelocity);
+        _rigidbody.linearVelocity = new Vector2(Random.Range(-InitialXVelocityRange,InitialXVelocityRange),InitialYVelocity);
         Destroy (gameObject,LifeTime);
     }
 

@@ -297,7 +297,7 @@ public IEnumerator Iframez(){
           //   TakeDamage(2);
              currentstamina = currentstamina - 4;
               stamina.SetHealth(currentstamina);
-               body.velocity=new Vector2(0,0);
+               body.linearVelocity=new Vector2(0,0);
                 body.AddForce( dashermeter);
         }
     }
@@ -317,9 +317,9 @@ public IEnumerator Iframez(){
         animator.SetFloat("HS", horizontal);
         animator.SetFloat("VS" , vertical);
         if(stringtime > staticinfo.stringu)
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+        body.linearVelocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
         else
-           body.velocity = new Vector2(horizontal * runSpeed*2.5f, vertical * runSpeed);
+           body.linearVelocity = new Vector2(horizontal * runSpeed*2.5f, vertical * runSpeed);
     }
     
 }
